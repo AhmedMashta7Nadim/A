@@ -15,7 +15,6 @@ class ServicesRepository implements IServicesRepository
         $this->model = $model;
     }
 
-    // جلب كل البيانات حيث يكون isActive = true
     public function getAll(): JsonResponse
     {
         try {
@@ -26,7 +25,6 @@ class ServicesRepository implements IServicesRepository
         }
     }
 
-    // جلب بيانات بناءً على ID
     public function getById($id): JsonResponse
     {
         try {
@@ -37,7 +35,6 @@ class ServicesRepository implements IServicesRepository
         }
     }
 
-    // إضافة بيانات جديدة
     public function add(array $data): JsonResponse
     {
         try {
@@ -48,7 +45,6 @@ class ServicesRepository implements IServicesRepository
         }
     }
 
-    // تحديث بيانات بناءً على ID
     public function update($id, array $data): JsonResponse
     {
         try {
@@ -60,7 +56,6 @@ class ServicesRepository implements IServicesRepository
         }
     }
 
-    // حذف بيانات (Soft Delete)
     public function deleteSoft($id): JsonResponse
     {
         try {

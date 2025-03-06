@@ -13,16 +13,15 @@ class UserController extends Controller
 {
     private UserRepository $userRepo;
 
-    // حقن التابع (Dependency Injection) للـ UserRepository
     public function __construct(UserRepository $userRepo)
     {
         $this->userRepo = $userRepo;
     }
-    // private UserRepository $userRepo;
-    // public function __construct( UserRepository $userRepo)
-    // {
-    //     $this->userRepo=$userRepo;
-    // }
+   
+    public function getUsers()
+    {
+        return $this->userRepo->getAll(); 
+    }
 
     public function login(Request $request)
     {

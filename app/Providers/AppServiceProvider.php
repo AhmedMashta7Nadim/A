@@ -17,13 +17,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(IServicesRepository::class, ServicesRepository::class);
         $this->app->bind(IServicesRepository::class, UserRepository::class);
-
-        // $this->app->scoped(IServicesRepository::class, ServicesRepository::class);
-        // $this->app->scoped(IServicesRepository::class, UserRepository::class);
-        // $this->app->scoped(ServicesRepository::class, UserRepository::class);
-        // $this->app->scoped(UserRepository::class, function ($app) {
-        //     return new UserRepository(new User());
-        // });
     }
     
 

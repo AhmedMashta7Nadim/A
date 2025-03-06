@@ -10,6 +10,6 @@ class UserRepository extends ServicesRepository
 
     public function __construct(User $user)
     {
-        parent::__construct($user); // استخدام الـ parent لتوريث الـ ServicesRepository
+        parent::__construct($user); 
     }
 }
