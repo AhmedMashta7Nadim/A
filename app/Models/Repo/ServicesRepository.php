@@ -2,23 +2,31 @@
 
 namespace App\Models\Repo;
 
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class ServicesRepository implements IServicesRepository
 {
     private Model $model;
 
+    private  $data;
+
     public function __construct(Model $model)
     {
         $this->model = $model;
+        $this->data = DB::table($this->model->getTable());
     }
+
+
 
     public function getAll(): JsonResponse
     {
+        //$data = $this->model->where('isActive', true)->get();
         try {
-            $data = $this->model->where('isActive', true)->get();
+        $data = $this->data->where('isActive', true)->get();
             return response()->json(["data" => $data], 200);
         } catch (Exception $exp) {
             return response()->json(["error" => $exp->getMessage()], 404);
@@ -27,6 +35,7 @@ class ServicesRepository implements IServicesRepository
 
     public function getById($id): JsonResponse
     {
+            // $data->findOrFail($id)->get();
         try {
             $data = $this->model->findOrFail($id);
             return response()->json(["Data" => $data], 200);

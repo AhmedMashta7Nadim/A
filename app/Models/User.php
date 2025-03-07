@@ -20,7 +20,6 @@ class User extends Authenticatable implements JWTSubject
         "Role",
         "IsActive"
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
