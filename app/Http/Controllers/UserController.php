@@ -23,6 +23,27 @@ class UserController extends Controller
         return $this->userRepo->getAll(); 
     }
 
+    // http://127.0.0.1:8000/api/user/getByIdUser/ ال اي دي الخاص بالمستخم الذي تيد عرضه
+    public function getByIdUser($id){
+        return $this->userRepo->getById($id);
+    }
+
+    public function AddUser(Request $request)
+    {
+       $data= $request->only(['name','email',bcrypt('password')]);
+        // $data["password"]=bcrypt($data["password"]);
+        $this->userRepo->add($data);
+        return response()->json(['message' => 'User added successfully'], 201);
+    }
+    
+    public function updateUser($id,Request $item){
+        $data=$item->only(["name","email",bcrypt("password"),"Role"]);
+        return $this->userRepo->update($id,$data);
+    }
+    public function SoftDeleted($id){
+        return $this->userRepo->deleteSoft($id);
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');

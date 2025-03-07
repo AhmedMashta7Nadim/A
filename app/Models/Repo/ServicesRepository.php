@@ -35,7 +35,7 @@ class ServicesRepository implements IServicesRepository
         }
     }
 
-    public function add(array $data): JsonResponse
+    public function add( $data): JsonResponse
     {
         try {
             $request = $this->model->create($data);
