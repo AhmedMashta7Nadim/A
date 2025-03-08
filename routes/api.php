@@ -18,3 +18,9 @@ Route::prefix('user')->group(function () {
     Route::patch('/updateUser/{id}', [UserController::class, 'updateUser']);
     Route::delete('/SoftDeleted/{id}', [UserController::class, "SoftDeleted"]);
 });
+
+Route::prefix("userSql")->group(function(){
+   Route::get("/GetDataSql",[UserController::class,"GetDataSql"]);
+   Route::get("/GetIdSql/{id}",[UserController::class,"GetIdSql"]);
+   Route::post("/AddUserSql",[UserController::class,"AddUserSql"]);
+});
