@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,4 +24,11 @@ Route::prefix("userSql")->group(function(){
    Route::get("/GetDataSql",[UserController::class,"GetDataSql"]);
    Route::get("/GetIdSql/{id}",[UserController::class,"GetIdSql"]);
    Route::post("/AddUserSql",[UserController::class,"AddUserSql"]);
+});
+
+Route::prefix("PostSql")->group(function(){
+Route::get("/getPosts",[PostController::class,"getPosts"]);
+Route::get("/getByIdPost/{id}",[PostController::class,"getByIdPost"]);
+Route::post("/AddPostSql",[PostController::class,"AddPostSql"]);
+Route::put("/UpdatePostSql/{id}",[PostController::class,"UpdatePostSql"]);
 });
