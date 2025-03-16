@@ -2,7 +2,14 @@
 
 namespace App\Models\RepositorySQL;
 
-class PostService
-{
+use Illuminate\Support\Facades\DB;
 
+class PostService extends PostRepositorySQL
+{
+    protected PostRepositorySQL $postRepositorySQL;
+    function __construct(PostRepositorySQL $postRepositorySQL)
+    {
+        $this->postRepositorySQL = $postRepositorySQL;
+    }
+   
 }

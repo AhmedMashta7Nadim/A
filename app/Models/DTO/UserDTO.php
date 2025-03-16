@@ -10,6 +10,7 @@ class UserDTO
         public readonly int $id,
         public readonly string $name,
         public readonly string $email,
+        public readonly string $Role,
         public readonly bool $IsActive
     ) {}
 
@@ -19,6 +20,7 @@ class UserDTO
             id: $data['id'],
             name: $data['name'],
             email: $data['email'],
+            Role: $data['Role'],
             IsActive:$data['IsActive']
         );
     }

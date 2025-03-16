@@ -7,8 +7,10 @@ use App\Models\Repo\ServicesRepository;
 use App\Models\Repo\UserRepository;
 use App\Models\RepositorySQL\IServicesRepositorySQL;
 use App\Models\RepositorySQL\PostRepositorySQL;
+use App\Models\RepositorySQL\PostService;
 use App\Models\RepositorySQL\ServicesRepositorySQL;
 use App\Models\RepositorySQL\UserRepositorySQL;
+use App\Models\RepositorySQL\UserService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,18 +22,25 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(IServicesRepository::class, ServicesRepository::class);
-        $this->app->bind(IServicesRepository::class, UserRepository::class);
+        $this->app->bind(IServicesRepositorySQL::class, ServicesRepositorySQL::class);
 
-        $this->app->bind(IServicesRepositorySQL::class,ServicesRepositorySQL::class);
-        $this->app->bind(IServicesRepositorySQL::class,UserRepositorySQL::class);
-        $this->app->bind(IServicesRepositorySQL::class,PostRepositorySQL::class);
+        $this->app->bind(UserRepositorySQL::class, function ($app) {
+            return new UserRepositorySQL();
+        });
 
+        $this->app->bind(PostRepositorySQL::class, function ($app) {
+            return new PostRepositorySQL();
+        });
+
+        $this->app->singleton(UserService::class, function ($app) {
+            return new UserService($app->make(UserRepositorySQL::class));
+        });
+
+        $this->app->singleton(PostService::class, function ($app) {
+            return new PostService($app->make(PostRepositorySQL::class));
+        });
     }
-    
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         Schema::defaultStringLength(191);

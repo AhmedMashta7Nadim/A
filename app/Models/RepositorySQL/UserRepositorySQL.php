@@ -25,38 +25,86 @@ class UserRepositorySQL implements IServicesRepositorySQL
 
 
 
+//    public function AddSql(array $data): ?UserDTO
+//    {
+//        $query = "INSERT INTO users (`name`, `email`, `password`) VALUES(?, ?, ?)";
+//        $inserted = DB::insert($query, [
+//            $data['name'],
+//            $data['email'],
+//            bcrypt($data['password'])
+//        ]);
+//        if ($inserted) {
+//            $id = DB::getPdo()->lastInsertId();
+//            return $this->getByIdSql($id);
+//        }
+//        return null;
+//    }
     public function AddSql(array $data): ?UserDTO
     {
-        $query = "INSERT INTO users (`name`, `email`, `password`) VALUES(?, ?, ?)";
-        $inserted = DB::insert($query, [
-            $data['name'],
-            $data['email'],
-            bcrypt($data['password'])
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
         ]);
-        if ($inserted) {
-            $id = DB::getPdo()->lastInsertId();
-            return $this->getByIdSql($id);
-        }
-        return null;
+
+        return $user ? UserDTO::fromArray($user->toArray()) : null;
     }
-
-
-
-
-    public function UpdateSql($Id, $columen, $data): ?UserDTO
+    public function UpdateSql($Id, $column, $data): ?UserDTO
     {
+        $allowedColumns = ['name', 'email', 'password'];
+        if (!in_array($column, $allowedColumns)) {
+            throw new \InvalidArgumentException("العمود المحدد غير صالح.");
+        }
 
-        $query = "UPDATE users SET `$columen`=? WHERE id=`$Id`";
-        $updated = DB::update($query, [
-            $data['name'],
-            $data['email'],
-            $Id
-        ]);
-        return $updated ? $this->getByIdSql($Id) : null;
+        $user = User::find($Id);
+        if (!$user) {
+            return null;
+        }
+
+        if ($column === 'password') {
+            $user->$column = bcrypt($data);
+        } else {
+            $user->$column = $data;
+        }
+
+        $user->save();
+
+        return UserDTO::fromArray($user->toArray());
     }
+
+
+
+
+//    public function UpdateSql($Id, $columen, $data): ?UserDTO
+//    {
+//
+//        $query = "UPDATE users SET `$columen`=? WHERE id=`$Id`";
+//        $updated = DB::update($query, [
+//            $data['name'],
+//            $data['email'],
+//            $Id
+//        ]);
+//        return $updated ? $this->getByIdSql($Id) : null;
+//    }
+//
+
     public function SoftDelete($Id): ?UserDTO
     {
-        $quere = "UPDATE users SET IsActive=false WHERE id=`$Id`";
-        return $quere ? $this->getByIdSql($Id) : null;
+        $user = User::find($Id);
+        if (!$user) {
+            return null;
+        }
+
+        $user->IsActive = false;
+        $user->save();
+
+        return UserDTO::fromArray($user->toArray());
     }
+
+
+//    public function SoftDelete($Id): ?UserDTO
+//    {
+//        $quere = "UPDATE users SET IsActive=false WHERE id=`$Id`";
+//        return $quere ? $this->getByIdSql($Id) : null;
+//    }
 }
