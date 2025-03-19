@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\Repo\IServicesRepository;
 use App\Models\Repo\ServicesRepository;
 use App\Models\Repo\UserRepository;
+use App\Models\RepositorySQL\CommintRepositorySQL;
+use App\Models\RepositorySQL\CommintService;
 use App\Models\RepositorySQL\IServicesRepositorySQL;
 use App\Models\RepositorySQL\PostRepositorySQL;
 use App\Models\RepositorySQL\PostService;
@@ -31,13 +33,18 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PostRepositorySQL::class, function ($app) {
             return new PostRepositorySQL();
         });
-
+        $this->app->bind(CommintRepositorySQL::class, function ($app) {
+            return new CommintRepositorySQL();
+        });
         $this->app->singleton(UserService::class, function ($app) {
             return new UserService($app->make(UserRepositorySQL::class));
         });
 
         $this->app->singleton(PostService::class, function ($app) {
             return new PostService($app->make(PostRepositorySQL::class));
+        });
+        $this->app->singleton(CommintService::class, function ($app) {
+            return new CommintService($app->make(CommintRepositorySQL::class));
         });
     }
 

@@ -4,6 +4,5 @@ return [
     App\Providers\AppServiceProvider::class,
     // App\Providers\ServiceRepositoryProvider::class,
     App\Providers\TelescopeServiceProvider::class,
-    App\Http\Middleware\HandleInertiaRequests::class,
 ];
 

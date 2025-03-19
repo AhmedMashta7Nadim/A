@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommintController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
@@ -13,6 +14,9 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/login',[UserController::class,"login"]);
 Route::post("/register", [UserController::class, "register"]);
+
+
+
 
 // Route::prefix('user')->group(function () {
 //     Route::get('/getUsers', [UserController::class, 'getUsers']);
@@ -40,4 +44,10 @@ Route::prefix("PostSql")->group(function () {
     Route::post("/AddPostSql", [PostController::class, "AddPostSql"]);
     Route::put("/UpdatePostSql/{id}", [PostController::class, "UpdatePostSql"]);
     Route::delete("/SoftDeletedPost/{id}", [PostController::class, "SoftDeletedPost"]);
+});
+
+Route::prefix("CommintSql")->group(function () {
+    Route::get("/getCommint",[CommintController::class,"getCommint"]);
+    Route::get("/getCommintsinUser/{id}",[CommintController::class,"getCommintsinUser"]);
+    Route::post("/AddCommint",[CommintController::class,"AddCommint"]);
 });

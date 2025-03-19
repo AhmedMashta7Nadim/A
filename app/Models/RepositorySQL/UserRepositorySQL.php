@@ -3,11 +3,35 @@
 namespace App\Models\RepositorySQL;
 
 use App\Models\DTO\UserDTO;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class UserRepositorySQL implements IServicesRepositorySQL
 {
+    
+    public function getNameUser($id)
+    {
+        $table = DB::selectOne("select name from users where IsActive=true And id=?", [$id]);
+        return $table;
+    }
+    public function getDataUserAndPost()
+    {
+        $table = DB::select('
+    select
+     u.name,
+     p.title,
+     p.content,
+     p.UserId,
+     p.id
+      from users as u 
+                    INNER JOIN posts as p on u.id=p.UserId
+                    where u.IsActive=true
+    ');
+        return $table;
+    }
+
+
     public function getAllSql()
     {
         $usersTable = DB::select('select * from users where IsActive=true');
