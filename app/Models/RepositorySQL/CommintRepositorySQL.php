@@ -13,6 +13,7 @@ use function Laravel\Prompts\table;
 class CommintRepositorySQL implements IServicesRepositorySQL{
     public function getAllSql(){
         $select=DB::select("select * from Commints where IsActive=true");
+        broadcast(new AlertEvent($select))->toOthers();
         return $select;
     }
 
@@ -32,8 +33,7 @@ class CommintRepositorySQL implements IServicesRepositorySQL{
         $commint = DB::table('Commints')
         ->where('UserId', $data['UserId'])
         ->where('PostId', $data['PostId'])
-        ->latest()->first();
-        broadcast(new AlertEvent($commint))->toOthers();
+       ->first();
 
         return $commint;
     }

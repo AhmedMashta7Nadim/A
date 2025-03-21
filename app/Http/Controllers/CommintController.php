@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AlertEvent;
 use App\Models\Commint;
 use App\Models\RepositorySQL\CommintService;
 use Illuminate\Http\Request;
@@ -9,18 +10,27 @@ use Illuminate\Http\Request;
 class CommintController extends Controller
 {
     private CommintService $commint_service;
-    
+
     public function __construct(CommintService $commint_service)
     {
         $this->commint_service = $commint_service;
     }
 
-    public function getCommint(){
-       $select= $this->commint_service->getAllSql();
+    public function getCommint()
+    {
+        $select = $this->commint_service->getAllSql();
+        //    broadcast(new AlertEvent("asd"));
+        event(new AlertEvent("asd"));
         return $select;
     }
+    public function sendAlert(Request $request)
+    {
+        event(new AlertEvent($request->message));
 
-    public function getCommintById($Id){
+        return response()->json(['message' => 'Event broadcasted successfully']);
+    }
+    public function getCommintById($Id)
+    {
         return $this->commint_service->getByIdSql($Id);
     }
 
@@ -30,13 +40,12 @@ class CommintController extends Controller
             // التحقق من صحة البيانات المدخلة
             $validatedData = $request->validate([
                 'content' => 'required|string',
-                'UserId' => 'required|integer|exists:users,id', 
-                'PostId' => 'required|integer|exists:posts,id', 
+                'UserId' => 'required|integer|exists:users,id',
+                'PostId' => 'required|integer|exists:posts,id',
             ]);
-    
+
             // محاولة إضافة التعليق
             $commint = $this->commint_service->AddSql($validatedData);
-    
             return response()->json([
                 'message' => 'تم إضافة التعليق بنجاح',
                 'commint' => $commint
@@ -49,10 +58,8 @@ class CommintController extends Controller
             ], 500);
         }
     }
-    public function getCommintsinUser($id){
-      return $this->commint_service->getCommintWithUser($id);
+    public function getCommintsinUser($id)
+    {
+        return $this->commint_service->getCommintWithUser($id);
     }
-
-
-
 }

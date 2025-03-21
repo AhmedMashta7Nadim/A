@@ -58,6 +58,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'broadcaster' => 'pusher',
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

@@ -23,22 +23,13 @@ class AlertEvent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('comments');
+        return new Channel('notification');
     }
-
+    public function broadcastWith() {
+        return ['message' => $this->comment]; 
+    }
     public function broadcastAs()
     {
         return 'comment.added';
     }
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    // public function broadcastOn(): array
-    // {
-    //     return [
-    //         new Channel('notification'),
-    //     ];
-    // }
 }

@@ -21,7 +21,6 @@ class CommintService extends CommintRepositorySQL
             INNER JOIN users AS u ON u.id=c.UserId
             WHERE c.IsActive = true AND c.PostId = :id
         ', ['id' => $id]);
-    
         return $table;
     }
     

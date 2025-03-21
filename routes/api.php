@@ -1,10 +1,12 @@
 <?php
 
+use App\Events\AlertEvent;
 use App\Http\Controllers\CommintController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -47,7 +49,14 @@ Route::prefix("PostSql")->group(function () {
 });
 
 Route::prefix("CommintSql")->group(function () {
+    event(new AlertEvent("اختبار Pusher من Postman"));
     Route::get("/getCommint",[CommintController::class,"getCommint"]);
     Route::get("/getCommintsinUser/{id}",[CommintController::class,"getCommintsinUser"]);
     Route::post("/AddCommint",[CommintController::class,"AddCommint"]);
+    Route::post("/sendAlert",[CommintController::class,"sendAlert"]);
+
+});
+Route::post("/testPusher", function () {
+    event(new AlertEvent("اختبار Pusher من Postman"));
+    return response()->json(["message" => "تم إرسال الحدث بنجاح!"]);
 });
